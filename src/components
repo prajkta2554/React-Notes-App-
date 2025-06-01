@@ -1,1 +1,64 @@
+components/Header.jsx
+const Header = ({ toggleDarkMode }) => {
+  return (
+    <div className="header">
+      <h1>Notes</h1>
+      <button onClick={toggleDarkMode}>Toggle Mode</button>
+    </div>
+  );
+};
+
+export default Header;
+
+
+components/Note.jsx
+const Note = ({ note, deleteNote }) => {
+  return (
+    <div className="note">
+      <span>{note.text}</span>
+      <div className="note-footer">
+        <small>{note.date}</small>
+        <button onClick={() => deleteNote(note.id)}>Delete</button>
+      </div>
+    </div>
+  );
+};
+
+export default Note;
+
+components/NoteList.jsx
+import Note from "./Note";
+import { useState } from "react";
+
+const NoteList = ({ notes, addNote, deleteNote }) => {
+  const [noteText, setNoteText] = useState("");
+
+  const handleSave = () => {
+    if (noteText.trim().length > 0) {
+      addNote(noteText);
+      setNoteText("");
+    }
+  };
+
+  return (
+    <div>
+      <div className="new-note">
+        <textarea
+          rows="4"
+          placeholder="Type to add a note..."
+          value={noteText}
+          onChange={(e) => setNoteText(e.target.value)}
+        ></textarea>
+        <button onClick={handleSave}>Save</button>
+      </div>
+      <div className="notes-list">
+        {notes.map((note) => (
+          <Note key={note.id} note={note} deleteNote={deleteNote} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default NoteList;
 
